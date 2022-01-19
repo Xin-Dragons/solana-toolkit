@@ -10,7 +10,7 @@ $ npm install
 
 ## Preparation
 
-* This lib expects you to have a json array file of all mints. This can be obtained using [https://www.sol-nft.tools/get-mints](https://www.sol-nft.tools/get-mints)
+This lib expects you to have a json array file of all mints. This can be obtained using [https://www.sol-nft.tools/get-mints](https://www.sol-nft.tools/get-mints)
 Enter the candy machine ID to download a json file of all mints
 
 ## Snapshot
