@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+const { size } = require('lodash');
+const readSnapshotDir = require('../lib/read-snapshot-dir');
+const airdrop = require('../lib/airdrop');
+
+let [snapshot] = process.argv.slice(2);
+
+if (!snapshot) {
+  console.error('Input missing');
+  console.error('Usage: airdrop snapshot[.json]');
+  process.exit(-1)
+}
+
+if (fs.existsSync(snapshot) && fs.lstatSync(snapshot).isDirectory()) {
+  snapshot = readSnapshotDir(snapshot);
+} else {
+  snapshot = JSON.parse(fs.readFileSync(path.resolve(snapshot)).toString());
+}
+
+async function doAirdrop() {
+  console.log(snapshot)
+  const errors = await airdrop(snapshot);
+
+  if (size(errors)) {
+    fs.writeFileSync('./airdrop-fails.json', JSON.stringify(errors, null, 2));
+  }
+}
+
+doAirdrop();

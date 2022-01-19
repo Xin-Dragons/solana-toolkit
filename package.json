@@ -1,0 +1,20 @@
+{
+  "name": "uploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "snapshot": "./bin/snapshot",
+    "airdrop": "./bin/airdrop"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@solana/spl-token": "^0.1.8",
+    "@solana/web3.js": "^1.31.0",
+    "dotenv": "^14.2.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "require-directory": "^2.1.1"
+  }
+}

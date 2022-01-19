@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+const moment = require('moment');
+const path = require('path');
+const fs = require('fs');
+let [input, output] = process.argv.slice(2);
+const doSnapshot = require('../lib/do-snapshot');
+
+if (!input) {
+  console.error('Input missing');
+  console.error('Usage: snapshot mints.json [output.json]');
+  process.exit(-1)
+}
+
+if (!fs.existsSync(input)) {
+  console.error('Input json file not found');
+  console.error('Usage: snapshot mints.json [output.json]');
+  process.exit(-1)
+}
+
+if (!output) {
+  output = `${moment().toISOString()}.json`;
+}
+
+if (fs.existsSync(output) && fs.lstatSync(output).isDirectory()) {
+  output = path.join(output, `${moment().toISOString()}.json`);
+}
+
+const str = fs.readFileSync(path.resolve(input)).toString();
+const addresses = JSON.parse(str);
+
+async function run() {
+  const snapshot = await doSnapshot(addresses);
+  fs.writeFileSync(output, JSON.stringify(snapshot, null, 2));
+}
+
+run();
