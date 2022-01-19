@@ -49,23 +49,33 @@ $ touch .env
 PATH_TO_SECRET_KEY=relative/path/to/keypair.json
 TOKEN_ADDRESS=YourTokenMintAddress
 AIRDROP_AMOUNT=5000000
+RPC_HOST=https://api.mainnet-beta.solana.com
 ```
 
-* `PATH_TO_SECRET_KEY` should be a relative path from your development directory to the wallet you generated before. If you followed the solana docs exaclty the file will be located at `~/my-solana-wallet/my-keypair.json`
-* `TOKEN_ADDRESS` this is the token mint address which can be found from the dexlab minting interface
-* `AIRDROP_AMOUNT` this is the amount of tokens to be airdropped. My example token here has 6 decimal places, so 5000000 is actually an airdrop amount of 5 tokens.  If you choose a different number of decimals when setting up your token you will need to adjust this number accordingly.
+* `PATH_TO_SECRET_KEY`: should be a relative path from your development directory to the wallet you generated before. If you followed the solana docs exaclty the file will be located at `~/my-solana-wallet/my-keypair.json`
+* `TOKEN_ADDRESS`: this is the token mint address which can be found from the dexlab minting interface
+* `AIRDROP_AMOUNT`: this is the amount of tokens to be airdropped. My example token here has 6 decimal places, so 5000000 is actually an airdrop amount of 5 tokens.  If you choose a different number of decimals when setting up your token you will need to adjust this number accordingly.
+* `RPC_HOST`: the solana RPC endpoint to use, eg: https://api.mainnet-beta.solana.com for mainnet, https://api.devnet.solana.com for devnet (these are rate limited so recommend using a private RPC)
 
 ### Run airdrop
 
 Once you are ready to run the airdrop you can use the following command
 
 ```
-$ npm run airdrop snapshot[.json]
+$ npm run airdrop snapshot[.json] [timeout]
+```
+
+**IMPORTANT** - timeout is optional, but if you are using the public RPC endpoint, requests are rate limited, so it is highly recommended to set this to a low number (such as `1`), this will force the requests to be run sequentially rather than in parallel.
+
+eg.
+
+```
+$ npm run airdrop ./snapshot.json 1
 ```
 
 The snapshot here can either be a single json snapshot file as generated earlier, or it can also be a directory of snapshots in the same format, where they will be aggregated and send to each wallet as a single transaction.
 
-Due to Solana network latency, often transactions are unsucessful, or fail to confirm. After the above command is run, a new file `airdrop-fails.json` will be generated in the project root.
+Due to Solana network latency, often transactions are unsuccessful, or fail to confirm. If this is the case a new file `airdrop-fails.json` will be generated in the project root.
 
 To re-run failed transactions, you can run the airdrop again but point to the newly created `airdrop-fails.json` file:
 

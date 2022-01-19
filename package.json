@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "snapshot": "./bin/snapshot",
-    "airdrop": "./bin/airdrop"
+    "airdrop": "./bin/airdrop",
+    "get-holder": "./bin/get-holder"
   },
   "author": "",
   "license": "ISC",

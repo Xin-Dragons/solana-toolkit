@@ -6,7 +6,7 @@ const { size } = require('lodash');
 const readSnapshotDir = require('../lib/read-snapshot-dir');
 const airdrop = require('../lib/airdrop');
 
-let [snapshot] = process.argv.slice(2);
+let [snapshot, timeout] = process.argv.slice(2);
 
 if (!snapshot) {
   console.error('Input missing');
@@ -21,8 +21,7 @@ if (fs.existsSync(snapshot) && fs.lstatSync(snapshot).isDirectory()) {
 }
 
 async function doAirdrop() {
-  console.log(snapshot)
-  const errors = await airdrop(snapshot);
+  const errors = await airdrop(snapshot, timeout);
 
   if (size(errors)) {
     fs.writeFileSync('./airdrop-fails.json', JSON.stringify(errors, null, 2));

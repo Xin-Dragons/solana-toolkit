@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const getNftOwner = require('../lib/get-nft-owner');
+
+const [address] = process.argv.slice(2);
+
+if (!address) {
+  console.error('Usage: get-holder address');
+  process.exit(-1)
+}
+
+async function run() {
+  const owner = await getNftOwner(address);
+
+  console.log(owner)
+  process.exit(0);
+}
+
+run();
