@@ -21,7 +21,9 @@ To take a snapshot of all holders, run the following command
 $ npm run snapshot ./mints.json [output.json]
 ```
 
-output is optional, if it is omitted the snapshot will be saved with a timestamp name such as 2022-01-19T12:07:01.274Z.json
+output is optional, if it is omitted the snapshot will be saved with a timestamp name such as
+
+```2022-01-19T12:07:01.274Z.json```
 
 output can be a directory, if a directory is given rather than a full path, the file will be named with a timestamp.
 
