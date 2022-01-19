@@ -25,7 +25,7 @@ output is optional, if it is omitted the snapshot will be saved with a timestamp
 
 ```2022-01-19T12:07:01.274Z.json```
 
-output can be a directory, if a directory is given rather than a full path, the file will be named with a timestamp.
+output can be a directory, if a directory is given rather than a full path, the file will written to the give directory and named with a timestamp as above.
 
 ## Airdrop
 
