@@ -36,7 +36,7 @@ output can be a directory, if a directory is given rather than a full path, the 
 * You will need to have a local wallet set up to send the token from - follow the guide here https://docs.solana.com/wallet-guide/file-system-wallet
 * Using the dexlab interface, send the tokens to be airdropped to the file system wallet you just created, you'll also need to fund the wallet with some sol for transaction fees.
 
-### Local env prop
+### Local env variables
 
 * create a `.env` file in the root directory
 
@@ -73,7 +73,7 @@ eg.
 $ npm run airdrop ./snapshot.json 1
 ```
 
-The snapshot here can either be a single json snapshot file as generated earlier, or it can also be a directory of snapshots in the same format, where they will be aggregated and send to each wallet as a single transaction.
+The snapshot here can either be a single json snapshot file as generated earlier, or it can also be a directory of snapshots in the same format, where they will be aggregated and sent to each wallet as a single transaction.
 
 Due to Solana network latency, often transactions are unsuccessful, or fail to confirm. If this is the case a new file `airdrop-fails.json` will be generated in the project root.
 
