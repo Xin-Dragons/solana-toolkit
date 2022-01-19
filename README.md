@@ -1,5 +1,5 @@
 # token-airdropper
-Utility lib for taking snapshots and running airdrops
+Utility lib for taking Solana NFT snapshots and running token airdrops
 
 ## installation
 
