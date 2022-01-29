@@ -6,13 +6,18 @@
   "scripts": {
     "snapshot": "./bin/snapshot",
     "airdrop": "./bin/airdrop",
-    "get-holder": "./bin/get-holder"
+    "get-nft-holder": "./bin/get-nft-holder",
+    "get-nft-holders": "./bin/get-nft-holders",
+    "get-token-holders": "./bin/get-token-holders"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@solana/spl-token": "^0.1.8",
     "@solana/web3.js": "^1.31.0",
+    "chalk": "^4.1.2",
+    "cli-progress": "^3.10.0",
+    "commander": "^8.3.0",
     "dotenv": "^14.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+require('dotenv').config();
+const { program } = require('commander');
+const getTokenOwners = require('../lib/get-token-owners');
+const fs = require('fs');
+const path = require('path');
+
+const { error, success, info } = require('../lib/helpers/log');
+
+program
+  .version('0.0.1')
+  .option('-a, --address <address>', 'token address')
+  .option('-o, --output <output>', 'output file')
+
+program.parse(process.argv);
+
+const options = program.opts();
+
+let { address, output } = options;
+
+if (!address) {
+  error('Usage: get-token-holders -a address');
+  process.exit(-1)
+}
+
+async function run() {
+  info('Getting token holders');
+  const owners = await getTokenOwners(address);
+
+  if (output) {
+    fs.writeFileSync(path.resolve(output), JSON.stringify(owners, null, 2));
+  } else {
+
+    info(JSON.stringify(owners, null, 2))
+    success('Success!');
+    info('Run with the -o option to save output as json');
+  }
+  process.exit(0);
+}
+
+run();

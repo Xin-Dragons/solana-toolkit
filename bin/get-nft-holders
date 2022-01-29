@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+const { size } = require('lodash');
+const { program } = require('commander');
+const cliProgress = require('cli-progress');
+const getNftOwner = require('../lib/get-nft-owner');
+
+const { error, info success } = require('../lib/helpers/log');
+
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+program
+  .version('0.0.1')
+  .option('-i, --input <input>', 'mints json')
+  .option('-o, --output <output>', 'output json');
+
+program.parse(process.argv);
+
+const options = program.opts();
+let { input, output } = options;
+
+if (!input) {
+  error('--input or -i is required');
+  process.exit(-1);
+}
+
+input = JSON.parse(fs.readFileSync(path.resolve(input)).toString());
+
+let progress = 0;
+bar.start(size(input), progress);
+
+function onProgress() {
+  bar.update(++progress);
+}
+
+info('Getting nft holders');
+
+Promise.all(
+  input.map(async mint => {
+    const owner = await getNftOwner(mint);
+
+    onProgress();
+
+    return owner;
+  })
+)
+  .then(owners => {
+    return owners.reduce((obj, owner) => {
+      if (obj[owner]) {
+        obj[owner].amount = obj[owner].amount + 1;
+      } else {
+        obj[owner] = {
+          amount: 1
+        }
+      }
+      return obj
+    }, {})
+  })
+  .then(owners => {
+    success('Success!')
+    if (output) {
+      fs.writeFileSync(`${output}`, JSON.stringify(owners, null, 2));
+    }
+    info(owners);
+    process.exit(0)
+  })
+  .catch(err => {
+    error(err);
+    process.exit(-1);
+  });

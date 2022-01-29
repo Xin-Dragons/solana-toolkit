@@ -1,8 +1,11 @@
 .DS_Store
 .env
 mints.json
-airdrop-fails.json
 node_modules
 dropped
 to-airdrop
 corrections
+error-logs/*
+!error-logs/.gitkeep
+success-logs/*
+!success-logs/.gitkeep

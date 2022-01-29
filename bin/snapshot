@@ -1,19 +1,35 @@
 #!/usr/bin/env node
+const { program } = require('commander');
 const moment = require('moment');
 const path = require('path');
 const fs = require('fs');
-let [input, output] = process.argv.slice(2);
+const { size } = require('lodash');
+const cliProgress = require('cli-progress');
+const { error, success, info } = require('../lib/helpers/log');
 const doSnapshot = require('../lib/do-snapshot');
 
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+program
+  .version('0.0.1')
+  .option('-i, --input <input>', './mints.json')
+  .option('-o, --output <output>', './ouput.json')
+
+program.parse(process.argv);
+
+const options = program.opts();
+
+let { input, output } = options;
+
 if (!input) {
-  console.error('Input missing');
-  console.error('Usage: snapshot mints.json [output.json]');
+  error('Input missing!');
+  error('Usage: snapshot mints.json [output.json]');
   process.exit(-1)
 }
 
 if (!fs.existsSync(input)) {
-  console.error('Input json file not found');
-  console.error('Usage: snapshot mints.json [output.json]');
+  error('Input json file not found');
+  error('Usage: snapshot mints.json [output.json]');
   process.exit(-1)
 }
 
@@ -29,8 +45,27 @@ const str = fs.readFileSync(path.resolve(input)).toString();
 const addresses = JSON.parse(str);
 
 async function run() {
-  const snapshot = await doSnapshot(addresses);
+  info('Taking snapshot');
+  let progress = 0;
+  bar.start(size(addresses), progress);
+
+  function onProgress() {
+    bar.update(++progress);
+  }
+
+  const snapshot = await doSnapshot(addresses, onProgress);
+
+  bar.stop();
+
   fs.writeFileSync(output, JSON.stringify(snapshot, null, 2));
+
+  const filePath = path.resolve(output);
+
+  success('Snapshot taken successfully');
+  console.log('\n');
+  info(`Snapshot path: ${filePath}`);
+
+  process.exit(0);
 }
 
 run();

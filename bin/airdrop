@@ -1,16 +1,32 @@
 #!/usr/bin/env node
 require('dotenv').config();
+const { program } = require('commander');
+const moment = require('moment');
 const fs = require('fs');
 const path = require('path');
 const { size } = require('lodash');
+const cliProgress = require('cli-progress');
 const readSnapshotDir = require('../lib/read-snapshot-dir');
 const airdrop = require('../lib/airdrop');
+const { error, info, success } = require('../lib/helpers/log');
 
-let [snapshot, timeout] = process.argv.slice(2);
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+program
+  .version('0.0.1')
+  .option('-s, --snapshot <snapshot>', 'snapshot json')
+  .option('-t, --timeout <timeout>', 'timeout in ms')
+  .option('-a, --amount <amount>', 'amount to drop')
+
+program.parse(process.argv);
+
+const options = program.opts();
+
+let { snapshot, corrections, timeout, amount } = options;
 
 if (!snapshot) {
-  console.error('Input missing');
-  console.error('Usage: airdrop snapshot[.json]');
+  error('Input missing');
+  error('Usage: airdrop -s snapshot[.json]');
   process.exit(-1)
 }
 
@@ -20,12 +36,43 @@ if (fs.existsSync(snapshot) && fs.lstatSync(snapshot).isDirectory()) {
   snapshot = JSON.parse(fs.readFileSync(path.resolve(snapshot)).toString());
 }
 
+if (corrections) {
+  corrections = JSON.parse(fs.readFileSync(path.resolve(corrections)).toString());
+}
+
 async function doAirdrop() {
-  const errors = await airdrop(snapshot, timeout);
+  info('Running airdrop');
+
+  let progress = 0;
+
+  bar.start(size(snapshot), progress);
+
+  function onProgress() {
+    bar.update(++progress);
+  }
+
+  const { errors, signatures } = await airdrop(snapshot, timeout, amount, onProgress);
+
+  const filename = `${moment().toISOString()}.json`
+
+  if (size(signatures)) {
+    const filePath = `./success-logs/${filename}`;
+    console.log('\n');
+    info(`Writing successful signatures to ${filePath}`)
+    fs.writeFileSync(path.resolve(filePath), JSON.stringify(signatures, null, 2));
+  }
 
   if (size(errors)) {
-    fs.writeFileSync('./airdrop-fails.json', JSON.stringify(errors, null, 2));
+    const filePath = `./error-logs/${filename}`;
+    console.log('\n');
+    error(`Writing failed drops to ${filePath}`);
+    fs.writeFileSync(path.resolve(filePath), JSON.stringify(errors, null, 2));
+  } else {
+    success('Airdrop completed successfully!');
   }
+
+  success('DONE!');
+  process.exit(0);
 }
 
 doAirdrop();
