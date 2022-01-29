@@ -88,7 +88,7 @@ ONE_TOKEN_PARTS=1000000
 Once you are ready to run the airdrop you can use the following command
 
 ```
-$ npm run airdrop -- -s snapshot.json -t timeout --a 70
+$ npm run airdrop -- -s snapshot.json -t timeout -a 70
 ```
 
 #### Options
