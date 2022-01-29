@@ -1,7 +1,7 @@
 # token-airdropper
 Utility lib for taking Solana NFT snapshots and running token airdrops, checking token holders etc
 
-## installation
+## Installation
 
 Clone repo, then run
 ```
@@ -116,6 +116,6 @@ $ npm run airdrop -- -s ./error-logs/2022-01-19T12:07:01.274Z.json
 
 ## CAVEATS
 
-`airdrop-fails.json` contains all transactions that could not be confirmed - this doesn't mean they all failed. To prevent duplicate drops, any failed transactions will currently need to be checked manually, to check the tokens were not dropped before running it again.
+`./error-logs/{timestamp}.json` contains all transactions that could not be confirmed - this doesn't mean they all failed. To prevent duplicate drops, any failed transactions will currently need to be checked manually, to check the tokens were not dropped before running it again.
 
 I hope to add a programmatic solution to this problem soon - perhaps a new command to run after the airdrop command to check the transaction ids, and remove any from fails which were successful.
