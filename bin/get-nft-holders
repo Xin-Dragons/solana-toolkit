@@ -6,7 +6,7 @@ const { program } = require('commander');
 const cliProgress = require('cli-progress');
 const getNftOwner = require('../lib/get-nft-owner');
 
-const { error, info success } = require('../lib/helpers/log');
+const { error, info, success } = require('../lib/helpers/log');
 
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 

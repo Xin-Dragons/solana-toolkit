@@ -24,6 +24,10 @@ const options = program.opts();
 
 let { snapshot, corrections, timeout, amount } = options;
 
+if (timeout) {
+  timeout = parseInt(timeout, 10);
+}
+
 if (!snapshot) {
   error('Input missing');
   error('Usage: airdrop -s snapshot[.json]');

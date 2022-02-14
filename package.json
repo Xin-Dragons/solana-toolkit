@@ -15,10 +15,13 @@
   "dependencies": {
     "@solana/spl-token": "^0.1.8",
     "@solana/web3.js": "^1.31.0",
+    "axios": "^0.25.0",
+    "bottleneck": "^2.19.5",
     "chalk": "^4.1.2",
     "cli-progress": "^3.10.0",
     "commander": "^8.3.0",
     "dotenv": "^14.2.0",
+    "glob": "^7.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "require-directory": "^2.1.1"
