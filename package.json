@@ -1,7 +1,7 @@
 {
-  "name": "uploader",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@xindragons/toolkit",
+  "version": "0.0.1",
+  "description": "Utility lib for taking Solana NFT snapshots and running token airdrops, checking token holders etc",
   "main": "index.js",
   "scripts": {
     "snapshot": "./bin/snapshot",
@@ -25,5 +25,17 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "require-directory": "^2.1.1"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xin-Dragons/solana-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Xin-Dragons/solana-toolkit/issues"
+  },
+  "homepage": "https://github.com/Xin-Dragons/solana-toolkit#readme"
 }
