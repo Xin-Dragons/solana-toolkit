@@ -1,6 +1,6 @@
 {
   "name": "@xindragons/toolkit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Utility lib for taking Solana NFT snapshots and running token airdrops, checking token holders etc",
   "main": "index.js",
   "scripts": {
