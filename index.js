@@ -1,7 +1,7 @@
 module.exports = {
   airdrop: require('./lib/airdrop'),
-  getNftOwner: require('./lib/getNftOwner'),
+  getNftOwner: require('./lib/get-nft-owner'),
   takeSnapshot: require('./lib/do-snapshot'),
-  getNftOwners: require('./lib/getNftOwners'),
-  getTokenOwners: require('./lib/getTokenOwners')
+  getNftOwners: require('./lib/get-nft-owners'),
+  getTokenOwners: require('./lib/get-token-owners')
 }
