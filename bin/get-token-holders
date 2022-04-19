@@ -11,12 +11,13 @@ program
   .version('0.0.1')
   .option('-a, --address <address>', 'token address')
   .option('-o, --output <output>', 'output file')
+  .option('-d, --decimals <decimals>', 'decimals')
 
 program.parse(process.argv);
 
 const options = program.opts();
 
-let { address, output } = options;
+let { address, output, decimals } = options;
 
 if (!address) {
   error('Usage: get-token-holders -a address');
@@ -25,7 +26,7 @@ if (!address) {
 
 async function run() {
   info('Getting token holders');
-  const owners = await getTokenOwners(address);
+  const owners = await getTokenOwners(address, decimals);
 
   if (output) {
     fs.writeFileSync(path.resolve(output), JSON.stringify(owners, null, 2));

@@ -14,23 +14,20 @@ const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 program
   .version('0.0.1')
+  .option('-t, --token <token>', 'token address')
   .option('-s, --snapshot <snapshot>', 'snapshot json')
-  .option('-t, --timeout <timeout>', 'timeout in ms')
-  .option('-a, --amount <amount>', 'amount to drop')
+  .option('-k, --keypair <keypair>', 'path to keypair')
+  .option('-f, --fee-payer <feePayer>', 'path to fee payer')
 
 program.parse(process.argv);
 
 const options = program.opts();
 
-let { snapshot, corrections, timeout, amount } = options;
+let { token, snapshot, keypair, feePayer } = options;
 
-if (timeout) {
-  timeout = parseInt(timeout, 10);
-}
-
-if (!snapshot) {
+if (!snapshot || !token || !keypair) {
   error('Input missing');
-  error('Usage: airdrop -s snapshot[.json]');
+  error('Usage: airdrop -s snapshot[.json] -t tokenAddress -k path/to/keypair');
   process.exit(-1)
 }
 
@@ -40,33 +37,29 @@ if (fs.existsSync(snapshot) && fs.lstatSync(snapshot).isDirectory()) {
   snapshot = JSON.parse(fs.readFileSync(path.resolve(snapshot)).toString());
 }
 
-if (corrections) {
-  corrections = JSON.parse(fs.readFileSync(path.resolve(corrections)).toString());
-}
-
 async function doAirdrop() {
   info('Running airdrop');
 
   let progress = 0;
 
-  bar.start(size(snapshot), progress);
+  bar.start(snapshot.filter(item => item.amount > 0).length, progress);
 
   function onProgress() {
     bar.update(++progress);
   }
 
-  const { errors, signatures } = await airdrop(snapshot, timeout, amount, onProgress);
+  const { errors, signatures } = await airdrop({ tokenMint: token, snapshot, onProgress, keypair, feePayer });
 
   const filename = `${moment().toISOString()}.json`
 
-  if (size(signatures)) {
+  if (signatures.length) {
     const filePath = `./success-logs/${filename}`;
     console.log('\n');
     info(`Writing successful signatures to ${filePath}`)
     fs.writeFileSync(path.resolve(filePath), JSON.stringify(signatures, null, 2));
   }
 
-  if (size(errors)) {
+  if (errors.length) {
     const filePath = `./error-logs/${filename}`;
     console.log('\n');
     error(`Writing failed drops to ${filePath}`);

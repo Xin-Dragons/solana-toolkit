@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@solana/spl-token": "^0.1.8",
-    "@solana/web3.js": "^1.31.0",
+    "@solana/web3.js": "^1.39.1",
     "axios": "^0.25.0",
     "bottleneck": "^2.19.5",
     "chalk": "^4.1.2",
@@ -29,7 +29,6 @@
   "directories": {
     "lib": "lib"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Xin-Dragons/solana-toolkit.git"
