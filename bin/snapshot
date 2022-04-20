@@ -15,12 +15,13 @@ program
   .version('0.0.1')
   .option('-i, --input <input>', './mints.json')
   .option('-o, --output <output>', './ouput.json')
+  .option('-t, --timeout <timeout>', 'time to wait between calls')
 
 program.parse(process.argv);
 
 const options = program.opts();
 
-let { input, output } = options;
+let { input, output, timeout } = options;
 
 if (!input) {
   error('Input missing!');
@@ -32,6 +33,10 @@ if (!fs.existsSync(input)) {
   error('Input json file not found');
   error('Usage: snapshot mints.json [output.json]');
   process.exit(-1)
+}
+
+if (timeout) {
+  timeout = parseInt(timeout, 10)
 }
 
 if (!output) {
@@ -54,7 +59,7 @@ async function run() {
     bar.update(++progress);
   }
 
-  const snapshot = await doSnapshot(addresses, onProgress);
+  const snapshot = await doSnapshot(addresses, timeout, onProgress);
 
   bar.stop();
 
