@@ -55,8 +55,8 @@ async function run() {
   let progress = 0;
   bar.start(size(addresses), progress);
 
-  function onProgress() {
-    bar.update(++progress);
+  function onProgress(num = 1) {
+    bar.update(progress += num);
   }
 
   const snapshot = await doSnapshot(addresses, timeout, onProgress);
